@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -340790334, guid: 67cc4cb7839cd3741b63733d5adf0442, type: 3}
+  m_Name: WazaMotion_MainMenu
+  m_EditorClassIdentifier: 
+  controls:
+  - name: "\u5F85\u3061\u30AC\u30A4\u30EBMotion"
+    icon: {fileID: 2800000, guid: 6d9ffc3209d676b4f841af2958e7e90e, type: 3}
+    type: 103
+    parameter:
+      name: WazaInt
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: 1fa8d4fbf0dce294b88b4d62494497dc, type: 2}
+    subParameters: []
+    labels: []
+  - name: "\u98DB\u3073\u9053\u5177Motion"
+    icon: {fileID: 2800000, guid: 5ca455ae1facd294281f20b137fac767, type: 3}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: f5398beba4d8ece42af049e5f68b497f, type: 2}
+    subParameters: []
+    labels: []
+  - name: "\u5BFE\u7A7A\u30FB\u56DE\u8EE2Motion"
+    icon: {fileID: 2800000, guid: 77e2a06cb486fb249bdaa5e677abda0e, type: 3}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: 9f8bd23d11095a84bbae8c6620cfbc2f, type: 2}
+    subParameters: []
+    labels: []
+  - name: "\u7A81\u9032Motion"
+    icon: {fileID: 2800000, guid: ed95c47ac5bc42a459fad1d334f6eef9, type: 3}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: 08a580227b2f39a47bb1af0e39cbad21, type: 2}
+    subParameters: []
+    labels: []
+  - name: "\u305D\u306E\u4ED6Motion"
+    icon: {fileID: 2800000, guid: 4a0b044214cac454faa5c24706e96893, type: 3}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: b8685268005714346b546897876bc398, type: 2}
+    subParameters: []
+    labels: []

@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -340790334, guid: 67cc4cb7839cd3741b63733d5adf0442, type: 3}
+  m_Name: ExMenu30_Tossin
+  m_EditorClassIdentifier: 
+  controls:
+  - name: "\u30C9\u30B9\u30B3\u30A4\uFF01"
+    icon: {fileID: 2800000, guid: b0395cfdc935e87469be37aa2edad3b6, type: 3}
+    type: 102
+    parameter:
+      name: WazaInt
+    value: 31
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: "G\u30D5\u30A1\u30F3\u30C8\u30E0(\u9577\u62BC\u3057\u30BF\u30E1)"
+    icon: {fileID: 2800000, guid: 45c7953df2169a24eb7c9f28c049613f, type: 3}
+    type: 101
+    parameter:
+      name: WazaInt
+    value: 32
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: "B\u30A6\u30EB\u30D5"
+    icon: {fileID: 2800000, guid: dfa90718252c297488889d0ae8cf3fde, type: 3}
+    type: 102
+    parameter:
+      name: WazaInt
+    value: 33
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: "\u4E00\u6483\u5FC5\u6BBA\uFF01(\u9577\u62BC\u3057\u30BF\u30E1)"
+    icon: {fileID: 2800000, guid: 1b19b6547ec14754e919d316c573bb6b, type: 3}
+    type: 101
+    parameter:
+      name: WazaInt
+    value: 34
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: "Psy\u30AF\u30E9\u30C3\u30B7\u30E3\u30FC"
+    icon: {fileID: 2800000, guid: 983db8b76d58501499394728d244b929, type: 3}
+    type: 102
+    parameter:
+      name: WazaInt
+    value: 35
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
