@@ -352,8 +352,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _runSpeed: 10
   _jumpForce: 6
+  PNum: 0
   nowState: 
   CanMoveOffset: 0
+  IsGuard: 0
   direction: 0
 --- !u!137 &1144534785
 SkinnedMeshRenderer:
@@ -2600,6 +2602,7 @@ GameObject:
   - component: {fileID: 1156523816}
   - component: {fileID: 1156523818}
   - component: {fileID: 1156523820}
+  - component: {fileID: 1156523822}
   m_Layer: 6
   m_Name: SD_unitychan_humanoid
   m_TagString: P1
@@ -5258,6 +5261,21 @@ Transform:
   m_Father: {fileID: 1156523811}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1156523822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156102915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f7ad4869744c254d86eafd3c95ecd22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  XAxis1: 0
+  XAxis2: 0
+  rawaxis: 0
 --- !u!4 &1156523823
 Transform:
   m_ObjectHideFlags: 0
