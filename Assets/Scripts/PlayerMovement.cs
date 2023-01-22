@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     public float CanMoveOffset;
     public bool IsGuard = false;
     public int direction;
-    
+    public bool CanMove;
 
     //プライベート変数
     private Rigidbody _rb;
@@ -58,44 +58,53 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(_rb != null)
+        if (CanMove)
         {
-            if(PNum == 1)
+            if (_rb != null)
             {
-                Movement1();
-            } 
-            else if (PNum == 2)
-            {
-                Movement2();
+                if (PNum == 1)
+                {
+                    Movement1();
+                }
+                else if (PNum == 2)
+                {
+                    Movement2();
+                }
             }
         }
+
     }
     void Update()
     {
+        if (CanMove)
+        {
+            if (_groundChecker != null)
+            {
+                _isGround = _groundChecker.IsGround();
+                if (_isGround)
+                {
+                    _jumpCount = 0;
+                }
+            }
+            if (_rb != null)
+            {
+                if (PNum == 1)
+                {
+                    _inputdata = _input.XAxis1;
+                    Jump1();
+                }
+                else if (PNum == 2)
+                {
+                    _inputdata = _input.XAxis2;
+                    Jump2();
+                }
+
+            }
+        }
+
         _isDamaged = _animator.GetCurrentAnimatorStateInfo(0).IsName("Damaged");
         
-        if (_groundChecker!= null)
-        {
-            _isGround = _groundChecker.IsGround();
-            if(_isGround )
-            {
-                _jumpCount = 0;
-            }
-        }
-        if (_rb != null)
-        {
-            if (PNum == 1)
-            {
-                _inputdata = _input.XAxis1;
-                Jump1();
-            }
-            else if (PNum == 2)
-            {
-                _inputdata = _input.XAxis2;
-                Jump2();
-            }
-            
-        }
+        
         
     }
 
@@ -212,7 +221,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    
+    public void MoveManager(bool value)
+    {
+        CanMove = value;
+    }
 
 
 }

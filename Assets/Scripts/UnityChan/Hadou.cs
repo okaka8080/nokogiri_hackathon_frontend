@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -22,9 +23,12 @@ public class Hadou : MonoBehaviour
     private PlayerMovement _player2;
     private bool isHit = false;
     private SkillSet _skill;
+    private NetWorkManager net;
+    private int _pNum;
 
     private void Start()
     {
+        net = GameObject.Find("NetWorkManager").GetComponent<NetWorkManager>();
         _rb = GetComponent<Rigidbody>();
         _gameManager = GameObject.Find("GameManager");
         _script = _gameManager.GetComponent<GameManager>();
@@ -38,11 +42,13 @@ public class Hadou : MonoBehaviour
         {
             x = _player1.direction;
             _eNum = 1;
+            _pNum = 0;
         }
         else if ((_playerNum == "P2"))
         {
             x = _player2.direction;
             _eNum = 0;
+            _pNum = 1;
 
         }
 
@@ -66,12 +72,20 @@ public class Hadou : MonoBehaviour
         {
 
             SetAnim anim = other.GetComponent<SetAnim>();
+            if (anim._isGuard)
+            {
+                anim._shieldsize -= new Vector3(1, 1, 1) * _skill.damage * 0.01f ;
+                anim.GuardHit();
+                isHit = true;
+                Destroy(this.gameObject);
+            }
+
             if (!anim.IsInvincible)
             {
                 anim.Damaged(1f);
 
 
-                _script.PlayerDamage[_eNum] += _skill.damage;
+                _script.PlayerDamage[_eNum] += _skill.damage * net.cheerPower[_pNum];
 
                 //float KB = ((0.1f + _script.PlayerDamage[_pNum] * 0.05f) * _script.PlayerDamage[_eNum] / 98f * 1.4f + 18f) * _skill.KBG * 0.01f + _skill.BKB;
                 //float KB = (((_script.PlayerDamage[_eNum] + 0.01f) * _skill.KBG)*((0.1f + _script.PlayerDamage[_pNum] * 0.05f ) * 0.01f) * _ForceSys / (98f * 2) )+ _skill.BKB * 0.1f;
@@ -79,11 +93,12 @@ public class Hadou : MonoBehaviour
                 Debug.Log(KB);
                 Rigidbody _enemyrb = other.GetComponent<Rigidbody>();
                 Vector3 _vec = _skill.vector.normalized;
-                _enemyrb.AddForce(new Vector3(_vec.x * x * KB * 0.25f , _vec.y * KB * 0.25f, 0), ForceMode.Impulse);
+                _enemyrb.AddForce(new Vector3(_vec.x * x * KB * 0.25f * net.cheerPower[_pNum], _vec.y * KB * 0.25f * net.cheerPower[_pNum], 0), ForceMode.Impulse);
                 Debug.Log(_script.PlayerDamage[_eNum]);
                 isHit = true;
                 Destroy(this.gameObject);
             }
+            
         }
     }
     private void OnTriggerStay(Collider other)
@@ -93,11 +108,18 @@ public class Hadou : MonoBehaviour
         {
 
             SetAnim anim = other.GetComponent<SetAnim>();
+            if (anim._isGuard)
+            {
+                anim._shieldsize -= new Vector3(1, 1, 1) * _skill.damage * 0.1f;
+                isHit = true;
+                Destroy(this.gameObject);
+            }
+
             if (!anim.IsInvincible)
             {
                 anim.Damaged(1f);
 
-                _script.PlayerDamage[_eNum] += _skill.damage;
+                _script.PlayerDamage[_eNum] += _skill.damage * net.cheerPower[_pNum];
 
                 //float KB = ((0.1f + _script.PlayerDamage[_pNum] * 0.05f) * _script.PlayerDamage[_eNum] / 98f * 1.4f + 18f) * _skill.KBG * 0.01f + _skill.BKB;
                 //float KB = (((_script.PlayerDamage[_eNum] + 0.01f) * _skill.KBG)*((0.1f + _script.PlayerDamage[_pNum] * 0.05f ) * 0.01f) * _ForceSys / (98f * 2) )+ _skill.BKB * 0.1f;
@@ -105,7 +127,7 @@ public class Hadou : MonoBehaviour
                 Debug.Log(KB);
                 Rigidbody _enemyrb = other.GetComponent<Rigidbody>();
                 Vector3 _vec = _skill.vector.normalized;
-                _enemyrb.AddForce(new Vector3(_vec.x * x * KB * 0.25f, _vec.y * KB * 0.25f, 0), ForceMode.Impulse);
+                _enemyrb.AddForce(new Vector3(_vec.x * x * KB * 0.25f * net.cheerPower[_pNum], _vec.y * KB * 0.25f * net.cheerPower[_pNum], 0), ForceMode.Impulse);
                 Debug.Log(_script.PlayerDamage[_eNum]);
                 isHit = true;
                 Destroy(this.gameObject);

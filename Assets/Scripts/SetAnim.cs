@@ -7,7 +7,9 @@ using static UnityEditor.Progress;
 
 public class SetAnim : MonoBehaviour
 {
-
+    [SerializeField] private GameObject HitEffect;
+    [SerializeField] private GameObject HitPos;
+    [SerializeField] private GameObject GuardEffect;
     private int PNum;
     private Rigidbody _rb;
     private Animator _animator;
@@ -18,11 +20,13 @@ public class SetAnim : MonoBehaviour
     private bool Rolling = false;
     private Vector3 preposition;
     private GameObject _shield;
+    public Vector3 _shieldsize;
+
     private float _inputdata;
     private ImputP _input;
     private bool _isDamaged;
-    private bool _isGuard;
-
+    public bool _isGuard;
+    public bool _isBreak;
     public bool IsInvincible;
     public float opption = 1;
    
@@ -45,143 +49,183 @@ public class SetAnim : MonoBehaviour
         {
             PNum = 2;
         }
+        _shieldsize = new Vector3(1, 1, 1);
     }
 
     private void Update()
     {
-        
-        _nowSpeed = Mathf.Abs(_inputdata);
-        
-        //var currentVelocity = (transform.position - preposition) /Time.deltaTime;
-        //preposition = transform.position;
-        //_nowSpeed = Mathf.Abs(currentVelocity.x);
-        SetAnimFloat("Speed", _nowSpeed, 0f);
-        if (_groundChecker!= null) 
+
+        if (_playerMovement.CanMove)
         {
-            _isGround = _groundChecker.IsGround();
-            SetAnimBool("IsGround", _isGround);
-        }
-        if (PNum == 1)
-        {
-            _inputdata = _input.XAxis1;
-            JudgeAnim1();
-            if (Input.GetKeyDown(KeyCode.W) && _playerMovement.CanMoveOffset != 0)
+            _nowSpeed = Mathf.Abs(_inputdata);
+
+            //var currentVelocity = (transform.position - preposition) /Time.deltaTime;
+            //preposition = transform.position;
+            //_nowSpeed = Mathf.Abs(currentVelocity.x);
+            SetAnimFloat("Speed", _nowSpeed, 0f);
+            if (_groundChecker != null)
             {
-                //SetAnimBool("IsJump", true);
-                if (_isGround)
+                _isGround = _groundChecker.IsGround();
+                SetAnimBool("IsGround", _isGround);
+            }
+            if (PNum == 1)
+            {
+                _inputdata = _input.XAxis1;
+                JudgeAnim1();
+                if (Input.GetKeyDown(KeyCode.W) && _playerMovement.CanMoveOffset != 0)
                 {
-                    SetAnimBool("IsJump", true);
+                    //SetAnimBool("IsJump", true);
+                    if (_isGround)
+                    {
+                        SetAnimBool("IsJump", true);
+                    }
+                    else
+                    {
+                        SetAnimTrigger("JumpButton");
+                    }
+                }
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    SetAnimTrigger("AButton");
+                }
+                if (Input.GetKey(KeyCode.R))
+                {
+                    opption += Time.deltaTime;
+                    SetAnimBool("ChargeB", true);
                 }
                 else
                 {
-                    SetAnimTrigger("JumpButton");
+                    SetAnimBool("ChargeB", false);
                 }
-            }
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                SetAnimTrigger("AButton");
-            }
-            if (Input.GetKey(KeyCode.R))
-            {
-                opption += Time.deltaTime;
-                SetAnimBool("ChargeB", true);
-            } else
-            {
-                SetAnimBool("ChargeB", false);
-            }
 
-            if (Input.GetKey(KeyCode.G))
-            {
-                SetAnimBool("IsGuard", true);
-            }
-            else
-            {
-                SetAnimBool("IsGuard", false);
-            }
-
-            if(Input.GetKeyDown(KeyCode.E))
-            {
-                SetAnimTrigger("BButton");
-                
-                
-            }
-        }
-        else if (PNum == 2)
-        {
-            _inputdata = _input.XAxis2;
-            JudgeAnim2();
-            if (Input.GetKeyDown(KeyCode.UpArrow) && _playerMovement.CanMoveOffset != 0)
-            {
-                //SetAnimBool("IsJump", true);
-                if (_isGround)
+                if (Input.GetKey(KeyCode.G) && !_isBreak)
                 {
-                    SetAnimBool("IsJump", true);
+                    SetAnimBool("IsGuard", true);
+
                 }
                 else
                 {
-                    SetAnimTrigger("JumpButton");
+
+                    SetAnimBool("IsGuard", false);
                 }
-            }
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                SetAnimTrigger("AButton");
-            }
-            if (Input.GetKey(KeyCode.K))
-            {
-                opption += Time.deltaTime * 0.1f;
-                SetAnimBool("ChargeB", true);
-            }
-            else
-            {
-                SetAnimBool("ChargeB", false);
-            }
 
-            if (Input.GetKey(KeyCode.O))
-            {
-                SetAnimBool("IsGuard", true);
-            }
-            else
-            {
-                SetAnimBool("IsGuard", false);
-            }
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                
-                SetAnimTrigger("BButton");
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    SetAnimTrigger("BButton");
 
-               
 
-            }
-        }
-
-        
-        if(_rb != null)
-        {
-            if (_rb.velocity.y < 0)
-            {
-                if (!_isGround)
+                }
+                if (_shieldsize.x < 0)
+                {
+                    _shieldsize = new Vector3(0, 0, 0);
+                }
+                else if (_shieldsize.x > 1.2f)
+                {
+                    _shieldsize = new Vector3(1.2f, 1.2f, 1.2f);
+                }
+                if (_isGround && !Input.GetKey(KeyCode.W))
                 {
                     SetAnimBool("IsJump", false);
                 }
-                SetAnimBool("IsFalling", true);
+            }
+            else if (PNum == 2)
+            {
+                _inputdata = _input.XAxis2;
+                JudgeAnim2();
+                if (Input.GetKeyDown(KeyCode.UpArrow) && _playerMovement.CanMoveOffset != 0)
+                {
+                    //SetAnimBool("IsJump", true);
+                    if (_isGround)
+                    {
+                        SetAnimBool("IsJump", true);
+                    }
+                    else
+                    {
+                        SetAnimTrigger("JumpButton");
+                    }
+                }
+                if (Input.GetKeyDown(KeyCode.L))
+                {
+                    SetAnimTrigger("AButton");
+                }
+                if (Input.GetKey(KeyCode.K))
+                {
+                    opption += Time.deltaTime * 0.1f;
+                    SetAnimBool("ChargeB", true);
+                }
+                else
+                {
+                    SetAnimBool("ChargeB", false);
+                }
+
+                if (Input.GetKey(KeyCode.O) && !_isBreak)
+                {
+                    SetAnimBool("IsGuard", true);
+
+                }
+                else
+                {
+
+                    SetAnimBool("IsGuard", false);
+                }
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+
+                    SetAnimTrigger("BButton");
+                }
+                if (_isGround && !Input.GetKey(KeyCode.UpArrow))
+                {
+                    SetAnimBool("IsJump", false);
+                }
+            }
+
+
+            if (_rb != null)
+            {
+
+
+                if (_rb.velocity.y < 0)
+                {
+                    if (!_isGround)
+                    {
+                        SetAnimBool("IsJump", false);
+                    }
+                    SetAnimBool("IsFalling", true);
+                }
+                else
+                {
+                    SetAnimBool("IsFalling", false);
+                }
+            }
+
+            if (opption > 2)
+            {
+                opption = 2;
+            }
+
+            if (Rolling || _isGuard)
+            {
+                IsInvincible = true;
             }
             else
             {
-                SetAnimBool("IsFalling", false);
+                _shieldsize += new Vector3(1.2f, 1.2f, 1.2f) * Time.deltaTime * 0.11f;
+                IsInvincible = false;
             }
-        }
 
-        if(opption > 2)
-        {
-            opption = 2;
-        }
 
-        if (Rolling || _isGuard)
-        {
-            IsInvincible = true;
-        } else
-        {
-            IsInvincible = false;
+
+            if (_shieldsize.x <= 0)
+            {
+                _isBreak = true;
+                _shieldsize = new Vector3(0, 0, 0);
+
+            }
+            else if (_shieldsize.x >= 1.2f)
+            {
+                _isBreak = false;
+                _shieldsize = new Vector3(1.2f, 1.2f, 1.2f);
+            }
         }
     }
 
@@ -231,10 +275,14 @@ public class SetAnim : MonoBehaviour
             {
                 _isGuard = true;
                 _shield.SetActive(true);
+                _shieldsize += new Vector3(-1, -1, -1) * Time.deltaTime * 0.1f;
+                _shield.transform.localScale = _shieldsize ;
             } else
             {
                 _isGuard = false;
                 _shield.SetActive(false);
+                _shield.transform.localScale = _shieldsize;
+
             }
 
             if (_animator.GetCurrentAnimatorStateInfo(0).IsName("Rolling"))
@@ -297,11 +345,14 @@ public class SetAnim : MonoBehaviour
             {
                 _isGuard = true;
                 _shield.SetActive(true);
+                _shieldsize += new Vector3(-1, -1, -1) * Time.deltaTime * 0.1f;
+                _shield.transform.localScale = _shieldsize;
             }
             else
             {
                 _isGuard = false;
                 _shield.SetActive(false);
+                _shield.transform.localScale = _shieldsize;
             }
 
             if (_animator.GetCurrentAnimatorStateInfo(0).IsName("Rolling"))
@@ -338,7 +389,13 @@ public class SetAnim : MonoBehaviour
 
     public void Damaged(float param)
     {
+        Instantiate(HitEffect, HitPos.transform.position, Quaternion.identity);
         SetAnimTrigger("Damaged");
         SetAnimFloat("DamageDegree", param, 0f);
+    }
+
+    public void GuardHit()
+    {
+        Instantiate(GuardEffect, HitPos.transform.position, Quaternion.identity);
     }
 }
